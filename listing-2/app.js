@@ -22,12 +22,24 @@
 
 $(function () {
 
-    var chart = c3.generate({
-        data: {
-            json: {
-                "my-data": [30, 200, 100, 400, 150, 250],
-            }
-        }
-    });
+    $.get("nyc-yearly-temp.csv")
+        .then(function (response) {
+            var dataFrame = dataForge.fromCSV(response)
+            var chartData = dataFrame.getSeries("AvgTemp").toArray();
+
+            var chart = c3.generate({
+                data: {
+                    json: {
+                        "NYC Yearly Temperature": chartData,
+                    }
+                }
+            });
+
+            console.log(response);
+        })
+        .catch(function (err) {
+            console.error(err);
+        });
+
 });
 
