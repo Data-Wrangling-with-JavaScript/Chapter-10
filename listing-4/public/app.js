@@ -22,18 +22,14 @@
 
 $(function () {
 
-    $.get("nyc-yearly-temp.csv")
-        .then(function (response) {
-            var dataFrame = dataForge.fromCSV(response)
-            var yearData = dataFrame.getSeries("Year").toArray();
-            var tempData = dataFrame.getSeries("AvgTemp").toArray();
-
+    $.get("/rest/data")
+        .then(function (data) {
             var chart = c3.generate({
                 data: {
-                    x: "Year",
-                    json: {
-                        "Year": yearData,
-                        "NYC Yearly Temperature": tempData,
+                    json: data,
+                    keys: {
+                        x: "Year",
+                        value: ["AvgTemp"]
                     }
                 }
             });

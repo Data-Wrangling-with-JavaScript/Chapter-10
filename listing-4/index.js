@@ -1,13 +1,27 @@
 "use strict";
 
-var express = require('express');
-var path = require('path');
+const express = require('express');
+const path = require('path');
+const importCsvFile = require('./toolkit/importCsvFile.js');
 
-var app = express();
+const app = express();
 
-var staticFilesPath = path.join(__dirname, "public");
-var staticFilesMiddleWare = express.static(staticFilesPath);
+const staticFilesPath = path.join(__dirname, "public");
+const staticFilesMiddleWare = express.static(staticFilesPath);
 app.use('/', staticFilesMiddleWare);
+
+app.get('/rest/data', (request, response) => {
+
+    importCsvFile("./data/nyc-yearly-temp.csv")
+        .then(data => {
+            response.json(data);
+        })
+        .catch(err => {
+            console.error(err);
+
+            response.sendStatus(500);
+        });
+});
 
 app.listen(3000, () => {
     console.log("Web server listening on port 3000!");
