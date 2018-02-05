@@ -25,12 +25,15 @@ $(function () {
     $.get("nyc-yearly-temp.csv")
         .then(function (response) {
             var dataFrame = dataForge.fromCSV(response)
-            var chartData = dataFrame.getSeries("AvgTemp").toArray();
+            var yearData = dataFrame.getSeries("Year").toArray();
+            var tempData = dataFrame.getSeries("AvgTemp").toArray();
 
             var chart = c3.generate({
                 data: {
+                    x: "Year",
                     json: {
-                        "NYC Yearly Temperature": chartData,
+                        "Year": yearData,
+                        "NYC Yearly Temperature": tempData,
                     }
                 }
             });
