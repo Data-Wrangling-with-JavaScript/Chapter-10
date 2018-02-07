@@ -22,7 +22,7 @@
 
 $(function () {
 
-    $.get("nyc-yearly-temp.csv")
+    $.get("data.csv")
         .then(function (response) {
             var dataFrame = dataForge.fromCSV(response)
             var chartData = dataFrame.getSeries("AvgTemp").toArray();

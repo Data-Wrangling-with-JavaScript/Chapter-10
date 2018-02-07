@@ -12,7 +12,7 @@ app.use('/', staticFilesMiddleWare);
 
 app.get('/rest/data', (request, response) => {
 
-    importCsvFile("./data/combined-yearly-temperature.csv")
+    importCsvFile("./data/data.csv")
         .then(data => {
             response.json(data);
         })
