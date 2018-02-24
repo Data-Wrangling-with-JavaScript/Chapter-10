@@ -3,7 +3,7 @@
 //
 // Based on the example line chart: http://c3js.org/samples/simple_multiple.html
 //
-// To run this, first install bower  install live-server:
+// To run this, first install bower, then install live-server:
 //
 //      npm install -g bower
 //
@@ -20,20 +20,27 @@
 // Your browser will open and a line chart will be rendered.
 //
 
+"use strict";
+
 $(function () {
 
     $.get("data.csv")
         .then(function (response) {
-            var dataFrame = dataForge.fromCSV(response)
-            var yearData = dataFrame.getSeries("Year").toArray();
-            var tempData = dataFrame.getSeries("AvgTemp").toArray();
+            var parseOptions = {
+                header: true,
+                dynamicTyping: true
+            };
+            var parsed = Papa.parse(response, parseOptions);
 
             var chart = c3.generate({
+                bindto: "#chart",
                 data: {
-                    x: "Year",
-                    json: {
-                        "Year": yearData,
-                        "NYC Yearly Temperature": tempData,
+                    json: parsed.data,
+                    keys: {
+                        x: "Year", // Specify the CSV file column to use as the X axis.
+                        value: [
+                            "AvgTemp"
+                        ]
                     }
                 }
             });

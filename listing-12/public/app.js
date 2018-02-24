@@ -24,19 +24,17 @@
 
 $(function () {
 
-    $.get("/rest/data") // Retreive the data via our REST API.
+    $.get("/rest/data")
         .then(function (data) {
-            var chart = c3.generate({ // Generate the chart the same as before.
+            var chart = c3.generate({
                 bindto: "#chart",
-                data: {
+                data: {                    
                     json: data,
                     keys: {
-                        x: "Year",
-                        value: [
-                            "AvgTemp"
-                        ]
+                        x: "Precipitation", // Using rainfall as the X axis in the scatter plot.
+                        value: [ "UmbrellaSales" ] // Using umbrella sales as the Y axis in the scatter plot.
                     },
-                    type: "line" // Set the type of the chart, 'line' is actually the default value so is unecessary in this case but I've added it so you know what you need to change when you change the chart type.
+                    type: "scatter" // Set our chart type to 'scatter'.
                 }
             });
         })

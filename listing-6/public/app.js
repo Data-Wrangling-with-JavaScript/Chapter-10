@@ -20,25 +20,31 @@
 // Your browser will open and a line chart will be rendered.
 //
 
+"use strict";
+
 $(function () {
 
     $.get("/rest/data")
         .then(function (data) {            
             var chart = c3.generate({
+                bindto: "#chart",
                 data: {
                     json: data,
                     keys: {
                         x: "Year",
-                        value: ["AvgTemp", "Snowfall"]
+                        value: [
+                            "AvgTemp", 
+                            "Snowfall"
+                        ]
                     },
                     axes: {
-                        AvgTemp: "y",
-                        Snowfall: "y2"
+                        AvgTemp: "y", // Average temperature should be attached to the first Y axis.
+                        Snowfall: "y2" // Snowfall should be attached to the second Y axis.
                     }
                 },
                 axis: {
                     y2: {
-                        show: true
+                        show: true // Enable the second Y axis, by default it is disabled.
                     }
                 }
             });

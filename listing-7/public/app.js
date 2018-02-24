@@ -20,30 +20,33 @@
 // Your browser will open and a line chart will be rendered.
 //
 
+"use strict";
+
 $(function () {
 
     $.get("/rest/data")
         .then(function (data) {            
             var chart = c3.generate({
+                bindto: "#chart",
                 data: {
                     json: data,
                     keys: {
-                        x: "Date",
-                        value: ["AvgTemp"]
+                        x: "Date", // Now using a date as our X axis.
+                        value: [ "AvgTemp" ]
                     }
                 },
                 axis: {
                     x: {
-                        type: 'timeseries',
+                        type: 'timeseries', // Set the type of the X axis to 'timeseries'.
                         tick: {
-                            rotate : 50,
-                            format: '%Y-%m-%d',
-                            count: 12
+                            rotate : 50, // Rotate the X axis off the horizontal for better layout.
+                            format: '%Y-%m-%d', // Format string so that C3 can render the X axis labels.
+                            count: 12 // The maximum number of ticks/labels to render so they aren't too cluttered.
                         }
                     }
                 },
                 point: {
-                    show: false
+                    show: false // Disable rendering of points so the chart looks less cluttered.
                 }
             });
         })

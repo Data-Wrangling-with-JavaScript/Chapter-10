@@ -20,16 +20,22 @@
 // Your browser will open and a line chart will be rendered.
 //
 
+"use strict";
+
 $(function () {
 
     $.get("/rest/data")
         .then(function (data) {
             var chart = c3.generate({
+                bindto: "#chart",
                 data: {
                     json: data,
                     keys: {
                         x: "Year",
-                        value: ["TempNYC", "TempLA"]
+                        value: [
+                            "TempNYC",  // Now we are rendering two columns from our CSV file into the chart.
+                            "TempLA"
+                        ]
                     }
                 }
             });

@@ -20,22 +20,31 @@
 // Your browser will open and a line chart will be rendered.
 //
 
+"use strict";
+
 $(function () {
 
-    $.get("data.csv")
-        .then(function (response) {
-            var dataFrame = dataForge.fromCSV(response)
-            var chartData = dataFrame.getSeries("AvgTemp").toArray();
+    $.get("data.csv") // Use HTTP GET (via Live-server) to retreive data from the static CSV file that we have included with our web assets.
+        .then(function (response) { // Callback is executed when data is asynchronously received.
+            var parseOptions = { // Parse options given to PapaParse.
+                header: true, // Allow PapaParse to derive field names from the CSV header line.
+                dynamicTyping: true // Tell PapaParse to parse CSV string fields to the correct types for us.
+            };
+            var parsed = Papa.parse(response, parseOptions); // Parse the CSV data retreived from Live-server.
 
-            var chart = c3.generate({
+            var chart = c3.generate({ // Generate our chart.
+                bindto: "#chart",
                 data: {
-                    json: {
-                        "NYC Yearly Temperature": chartData,
+                    json: parsed.data, // Plug the parsed CSV data into the chart.
+                    keys: {
+                        value: [
+                            "AvgTemp" // Specify which column from the CSV file that we want to appear in the chart.
+                        ]
                     }
                 }
             });
         })
-        .catch(function (err) {
+        .catch(function (err) { // Handle any error that might have occurred.
             console.error(err);
         });
 

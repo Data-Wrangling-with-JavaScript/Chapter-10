@@ -20,12 +20,15 @@
 // Your browser will open and a line chart will be rendered.
 //
 
-$(function () {
+"use strict";
 
-    var chart = c3.generate({
-        data: {
+$(function () { // Set the callback that is invoked when the web page has loaded.
+
+    var chart = c3.generate({ // Use C3 to generate the chart.
+        bindto: "#chart", // Specify the element in the HTML document where C3 will render the chart.
+        data: { // Specifies the data to render in the chart.
             json: {
-                "my-data": [30, 200, 100, 400, 150, 250],
+                "my-data": [30, 200, 100, 400, 150, 250], // Just one data series, using some hard-coded data just so we can quickly see that the chart works.
             }
         }
     });

@@ -22,21 +22,43 @@
 
 "use strict";
 
+var monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+];
+
+function getMonthName (monthNo) { // Get the month name from the month number.
+    return monthNames[monthNo-1];
+}
+
 $(function () {
 
-    $.get("/rest/data") // Retreive the data via our REST API.
+    $.get("/rest/data")
         .then(function (data) {
-            var chart = c3.generate({ // Generate the chart the same as before.
+            var chartData = {};
+            for (var rowIndex = 0; rowIndex < data.length; ++rowIndex) { // Restructure our data for the pie chart.
+                var row = data[rowIndex];
+                chartData[getMonthName(row.Month)] = row.AvgTemp; // Organise our temperature data by month.
+            }
+
+            var chart = c3.generate({
                 bindto: "#chart",
                 data: {
-                    json: data,
+                    json: [ chartData ],
                     keys: {
-                        x: "Year",
-                        value: [
-                            "AvgTemp"
-                        ]
+                        value: monthNames
                     },
-                    type: "line" // Set the type of the chart, 'line' is actually the default value so is unecessary in this case but I've added it so you know what you need to change when you change the chart type.
+                    type: "pie" // Change the chart type to 'pie'.
                 }
             });
         })
