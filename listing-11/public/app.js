@@ -37,8 +37,27 @@ var monthNames = [
     "Dec"
 ];
 
+var monthColor = [
+    "#7679CD",
+    "#6967C0",
+    "#A7BFFE",
+    "#A7BFFE",
+    "#F8B132",
+    "#FA8828",
+    "#FC4C1A",
+    "#FA8828",
+    "#F8B132",
+    "#A7BFFE",
+    "#A7BFFE",
+    "#7679CD",
+];
+
 function getMonthName (monthNo) { // Get the month name from the month number.
     return monthNames[monthNo-1];
+}
+
+function getMonthColor (monthNo) { // Get the color to use for the month.
+    return monthColor[monthNo-1];
 }
 
 $(function () {
@@ -46,9 +65,12 @@ $(function () {
     $.get("/rest/data")
         .then(function (data) {
             var chartData = {};
+            var chartColors = {};
             for (var rowIndex = 0; rowIndex < data.length; ++rowIndex) { // Restructure our data for the pie chart.
                 var row = data[rowIndex];
-                chartData[getMonthName(row.Month)] = row.AvgTemp; // Organise our temperature data by month.
+                var monthName = getMonthName(row.Month);
+                chartData[monthName] = row.AvgTemp; // Organise our temperature data by month.
+                chartColors[monthName] = getMonthColor(row.Month);
             }
 
             var chart = c3.generate({
@@ -58,7 +80,9 @@ $(function () {
                     keys: {
                         value: monthNames
                     },
-                    type: "pie" // Change the chart type to 'pie'.
+                    type: "pie", // Change the chart type to 'pie'.
+                    order: null,
+                    colors: chartColors
                 }
             });
         })
