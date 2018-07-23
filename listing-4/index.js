@@ -8,9 +8,9 @@ const app = express();
 
 const staticFilesPath = path.join(__dirname, "public"); // Make our 'public' sub-directory accessible via HTTP.
 const staticFilesMiddleWare = express.static(staticFilesPath);
-app.use('/', staticFilesMiddleWare);
+app.use("/", staticFilesMiddleWare);
 
-app.get('/rest/data', (request, response) => { // Set up a HTTP GET request handler that can serve data to our web app.
+app.get("/rest/data", (request, response) => { // Set up a HTTP GET request handler that can serve data to our web app.
 
     importCsvFile("./data/data.csv") // Load the CSV file from the server's file system.
         .then(data => {

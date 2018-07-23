@@ -8,10 +8,9 @@ const app = express();
 
 const staticFilesPath = path.join(__dirname, "public");
 const staticFilesMiddleware = express.static(staticFilesPath);
-app.use('/', staticFilesMiddleware);
+app.use("/", staticFilesMiddleware);
 
-app.get('/rest/data', (request, response) => {
-
+app.get("/rest/data", (request, response) => {
     Promise.all([
             dataForge.readFile("./data/nyc-weather.csv").parseCSV(),
             dataForge.readFile("./data/nyc-umbrella-sales.csv").parseCSV()
@@ -21,22 +20,19 @@ app.get('/rest/data', (request, response) => {
                 .parseInts(["Year", "Month", "Day"])
                 .parseFloats("Precipitation")
                 .generateSeries({
-                    Date: row => new Date(row.Year, row.Month-1, row.Day), //todo: bake the date.
+                    Date: row => new Date(row.Year, row.Month-1, row.Day),
                 })
                 .setIndex("Date")
                 .bake();
             
             const umbrellaSalesData = results[1]
-                .parseDates("Date", "DD/MM/YYYY") //todo: fix the date!!
+                .parseDates("Date", "DD/MM/YYYY")
                 .parseFloats("Sales")
                 .setIndex("Date")
                 .bake();
 
             const mergedData = weatherData 
                 .withSeries("UmbrellaSales", umbrellaSalesData.getSeries("Sales"))
-                .bake()
-                //todo: do I need any of this!!
-                .where(row => row.Precipitation > 0) //fio: ???
                 .where(row => row.Precipitation <= 50)
                 .where(row => row.UmbrellaSales !== undefined)
                 .bake();

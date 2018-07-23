@@ -8,9 +8,9 @@ const app = express();
 
 const staticFilesPath = path.join(__dirname, "public");
 const staticFilesMiddleWare = express.static(staticFilesPath);
-app.use('/', staticFilesMiddleWare);
+app.use("/", staticFilesMiddleWare);
 
-app.get('/rest/data', (request, response) => {
+app.get("/rest/data", (request, response) => {
 
     importCsvFile("./data/data.csv")
         .then(data => {
